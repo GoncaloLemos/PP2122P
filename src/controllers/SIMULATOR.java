@@ -40,6 +40,11 @@ public class SIMULATOR {
             }
             BUS BUS_THREAD = new BUS("Bus Mini_Bus #" + i + 1, BUS_TYPE.MINI_BUS, ORIGIN, DESTINATION);
             BUS_THREAD.start();
+            try {
+                BUS_THREAD.join();
+            } catch (InterruptedException e) {
+                System.out.println("ERROR_LINE44: UNABLE TO WAIT FOR THREAD TO FINISH.");
+            }
         }
         for (int i = 0; i < NUMBER_OF_CONVENCIONAL; i++) {
             CITY ORIGIN = CITY.values()[new Random().nextInt(CITY.values().length)];
@@ -49,6 +54,11 @@ public class SIMULATOR {
             }
             BUS BUS_THREAD = new BUS("Bus Convencional #" + i + 1, BUS_TYPE.CONVENTIONAL, ORIGIN, DESTINATION);
             BUS_THREAD.start();
+            try {
+                BUS_THREAD.join();
+            } catch (InterruptedException e) {
+                System.out.println("ERROR_LINE58: UNABLE TO WAIT FOR THREAD TO FINISH.");
+            }
         }
         for (int i = 0; i < NUMBER_OF_LONG_DRIVE; i++) {
             CITY ORIGIN = CITY.values()[new Random().nextInt(CITY.values().length)];
@@ -58,15 +68,25 @@ public class SIMULATOR {
             }
             BUS BUS_THREAD = new BUS("Bus Long_Drive #" + i + 1, BUS_TYPE.LONG_DRIVE, ORIGIN, DESTINATION);
             BUS_THREAD.start();
+            try {
+                BUS_THREAD.join();
+            } catch (InterruptedException e) {
+                System.out.println("ERROR_LINE72: UNABLE TO WAIT FOR THREAD TO FINISH.");
+            }
         }
         for (int i = 0; i < NUMBER_OF_EXPRESSO; i++) {
-            CITY ORIGIN = CITY.values()[new Random().nextInt(Arrays.stream(CITY.values()).filter(j -> j == CITY.Cascais || j == CITY.Coimbra).toArray().length)];
-            CITY DESTINATION = CITY.values()[new Random().nextInt(Arrays.stream(CITY.values()).filter(j -> j == CITY.Cascais || j == CITY.Coimbra).toArray().length)];
+            CITY ORIGIN = CITY.values()[new Random().nextInt(Arrays.stream(CITY.values()).filter(j -> j == CITY.CASCAIS || j == CITY.COIMBRA).toArray().length)];
+            CITY DESTINATION = CITY.values()[new Random().nextInt(Arrays.stream(CITY.values()).filter(j -> j == CITY.CASCAIS || j == CITY.COIMBRA).toArray().length)];
             while (DESTINATION == ORIGIN) {
-                DESTINATION = CITY.values()[new Random().nextInt(Arrays.stream(CITY.values()).filter(j -> j == CITY.Cascais || j == CITY.Coimbra).toArray().length)];
+                DESTINATION = CITY.values()[new Random().nextInt(Arrays.stream(CITY.values()).filter(j -> j == CITY.CASCAIS || j == CITY.COIMBRA).toArray().length)];
             }
             BUS BUS_THREAD = new BUS("Bus Expresso #" + i + 1, BUS_TYPE.EXPRESS, ORIGIN, DESTINATION);
             BUS_THREAD.start();
+            try {
+                BUS_THREAD.join();
+            } catch (InterruptedException e) {
+                System.out.println("ERROR_LINE88: UNABLE TO WAIT FOR THREAD TO FINISH.");
+            }
         }
     }
 }
