@@ -4,11 +4,16 @@
 
 package views;
 
+import controllers.Simulator;
+
 import java.util.Scanner;
 
 public class CLI {
     public CLI() {
         final Scanner scanner = new Scanner(System.in);
+        System.out.println("Welcome to the bus simulator!");
+        final Simulator simulator = new Simulator();
+        // TODO: Implement the CLI.
         do {
 //            final var line = scanner.nextLine();
 //            final String[] commands = line.split(" ");
