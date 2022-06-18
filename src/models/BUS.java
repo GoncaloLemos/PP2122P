@@ -11,6 +11,7 @@ import org.json.simple.parser.ParseException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 public class BUS extends Thread {
     /**
@@ -130,6 +131,15 @@ public class BUS extends Thread {
      * @return The bus' next stop.
      */
     public CITY GET_NEXT_STOP() {
-        return null;
+        CITY[] STOPS = new CITY[]{CITY.CASCAIS, CITY.LISBOA, CITY.COIMBRA, CITY.PORTO, CITY.BRAGA};
+        if (CURRENT_STOP == DESTINATION) {
+            return null;
+        } else {
+            if (IntStream.range(0, STOPS.length).filter(i -> ORIGIN == STOPS[i]).findFirst().getAsInt() < IntStream.range(0, STOPS.length).filter(i -> DESTINATION == STOPS[i]).findFirst().getAsInt()) {
+                return STOPS[IntStream.range(0, STOPS.length).filter(i -> CURRENT_STOP == STOPS[i]).findFirst().getAsInt() + 1];
+            } else {
+                return STOPS[IntStream.range(0, STOPS.length).filter(i -> CURRENT_STOP == STOPS[i]).findFirst().getAsInt() - 1];
+            }
+        }
     }
 }
