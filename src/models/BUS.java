@@ -11,6 +11,7 @@ import org.json.simple.parser.ParseException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 public class BUS extends Thread {
     /**
@@ -46,14 +47,6 @@ public class BUS extends Thread {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Initializes a new instance of the Bus class.
-     *
-     * @param THREAD_NAME The bus' name.
-     * @param BUS_TYPE    The new bus' type.
-     * @param DESTINATION The new bus' destination.
-     * @param ORIGIN      The new bus' origin city.
-     */
     public BUS(final String THREAD_NAME, final BUS_TYPE BUS_TYPE, final CITY DESTINATION, final CITY ORIGIN) {
         JSONObject JSON = null;
         try {
@@ -124,12 +117,15 @@ public class BUS extends Thread {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Returns the bus' next stop.
-     *
-     * @return The bus' next stop.
-     */
     public CITY GET_NEXT_STOP() {
-        return null;
+        CITY[] STOPS = new CITY[]{CITY.CASCAIS, CITY.LISBOA, CITY.COIMBRA, CITY.PORTO, CITY.BRAGA};
+        CITY[] STOPS_EXPRESS = new CITY[]{CITY.LISBOA, CITY.PORTO, CITY.BRAGA};
+        if (CURRENT_STOP == DESTINATION) return null;
+        return switch (TYPE) {
+            case EXPRESS ->
+                    IntStream.range(0, STOPS_EXPRESS.length).filter(i -> ORIGIN == STOPS_EXPRESS[i]).findFirst().getAsInt() < IntStream.range(0, STOPS_EXPRESS.length).filter(i -> DESTINATION == STOPS_EXPRESS[i]).findFirst().getAsInt() ? STOPS[IntStream.range(0, STOPS_EXPRESS.length).filter(i -> CURRENT_STOP == STOPS_EXPRESS[i]).findFirst().getAsInt() + 1] : STOPS[IntStream.range(0, STOPS_EXPRESS.length).filter(i -> CURRENT_STOP == STOPS_EXPRESS[i]).findFirst().getAsInt() - 1];
+            default ->
+                    IntStream.range(0, STOPS.length).filter(i -> ORIGIN == STOPS[i]).findFirst().getAsInt() < IntStream.range(0, STOPS.length).filter(i -> DESTINATION == STOPS[i]).findFirst().getAsInt() ? STOPS[IntStream.range(0, STOPS.length).filter(i -> CURRENT_STOP == STOPS[i]).findFirst().getAsInt() + 1] : STOPS[IntStream.range(0, STOPS.length).filter(i -> CURRENT_STOP == STOPS[i]).findFirst().getAsInt() - 1];
+        };
     }
 }
