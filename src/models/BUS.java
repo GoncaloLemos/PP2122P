@@ -20,15 +20,15 @@ public class BUS extends Thread {
     /**
      * The bus' type.
      */
-    private final BusType TYPE;
+    private final BUS_TYPE TYPE;
     /**
      * The bus' destination.
      */
-    private final City DESTINATION;
+    private final CITY DESTINATION;
     /**
      * The bus' origin city.
      */
-    private final City ORIGIN;
+    private final CITY ORIGIN;
     /**
      * The bus' current speed. (Delay in milliseconds it takes to travel between two stops.)
      * It is calculated based on the bus' type.
@@ -38,7 +38,7 @@ public class BUS extends Thread {
     /**
      * The bus' current stop.
      */
-    private City CURRENT_STOP;
+    private CITY CURRENT_STOP;
     /**
      * The bus' current amount passengers.
      */
@@ -54,7 +54,7 @@ public class BUS extends Thread {
      * @param DESTINATION The new bus' destination.
      * @param ORIGIN      The new bus' origin city.
      */
-    public BUS(final String THREAD_NAME, final BusType BUS_TYPE, final City DESTINATION, final City ORIGIN) {
+    public BUS(final String THREAD_NAME, final BUS_TYPE BUS_TYPE, final CITY DESTINATION, final CITY ORIGIN) {
         JSONObject JSON = null;
         try {
             JSON = (JSONObject) new JSONParser().parse(new FileReader("./src/config.json"));
@@ -69,24 +69,24 @@ public class BUS extends Thread {
         this.DESTINATION = DESTINATION;
         this.ORIGIN = ORIGIN;
         MAX_CAPACITY = switch (BUS_TYPE) {
-            case Mini_Bus ->
+            case MINI_BUS ->
                     JSON.get("MAX_CAPACITY_MINI_BUS") instanceof Long ? ((Long) JSON.get("MAX_CAPACITY_MINI_BUS")).intValue() : (int) JSON.get("MAX_CAPACITY_MINI_BUS");
-            case Convencional ->
+            case CONVENTIONAL ->
                     JSON.get("MAX_CAPACITY_CONVENCIONAL") instanceof Long ? ((Long) JSON.get("MAX_CAPACITY_CONVENCIONAL")).intValue() : (int) JSON.get("MAX_CAPACITY_CONVENCIONAL");
-            case Long_Drive ->
+            case LONG_DRIVE ->
                     JSON.get("MAX_CAPACITY_LONG_DRIVE") instanceof Long ? ((Long) JSON.get("MAX_CAPACITY_LONG_DRIVE")).intValue() : (int) JSON.get("MAX_CAPACITY_LONG_DRIVE");
-            case Expresso ->
+            case EXPRESS ->
                     JSON.get("MAX_CAPACITY_EXPRESSO") instanceof Long ? ((Long) JSON.get("MAX_CAPACITY_EXPRESSO")).intValue() : (int) JSON.get("MAX_CAPACITY_EXPRESSO");
         };
         CURRENT_STOP = this.ORIGIN;
         SPEED = switch (BUS_TYPE) {
-            case Mini_Bus ->
+            case MINI_BUS ->
                     JSON.get("BASE_SPEED_MINI_BUS") instanceof Long ? ((Long) JSON.get("BASE_SPEED_MINI_BUS")).intValue() : (int) JSON.get("BASE_SPEED_MINI_BUS");
-            case Convencional ->
+            case CONVENTIONAL ->
                     JSON.get("BASE_SPEED_CONVENCIONAL") instanceof Long ? ((Long) JSON.get("BASE_SPEED_CONVENCIONAL")).intValue() : (int) JSON.get("BASE_SPEED_CONVENCIONAL");
-            case Long_Drive ->
+            case LONG_DRIVE ->
                     JSON.get("BASE_SPEED_LONG_DRIVE") instanceof Long ? ((Long) JSON.get("BASE_SPEED_LONG_DRIVE")).intValue() : (int) JSON.get("BASE_SPEED_LONG_DRIVE");
-            case Expresso ->
+            case EXPRESS ->
                     JSON.get("BASE_SPEED_EXPRESSO") instanceof Long ? ((Long) JSON.get("BASE_SPEED_EXPRESSO")).intValue() : (int) JSON.get("BASE_SPEED_EXPRESSO");
         };
         this.setPriority(Thread.NORM_PRIORITY);
@@ -99,18 +99,18 @@ public class BUS extends Thread {
     public void run() {
         super.run();
         try {
-            while (this.get_next_stop() != null) {
+            while (this.GET_NEXT_STOP() != null) {
                 System.out.println("\n============================================================\n" +
                         this.getName() + ":" +
                         "\nOrigin: " + ORIGIN +
                         "\nDestination: " + DESTINATION +
-                        "\nCurrent Stop: " + this.get_next_stop().name() +
+                        "\nCurrent Stop: " + this.GET_NEXT_STOP().name() +
                         "\nCurrent Passengers: " + CURRENT_PASSENGERS +
                         "\nLeftover Seats: " + (MAX_CAPACITY - CURRENT_PASSENGERS) +
                         "\n============================================================");
                 CURRENT_PASSENGERS = new Random().nextInt(MAX_CAPACITY + 1);
                 Thread.sleep(SPEED);
-                CURRENT_STOP = get_next_stop();
+                CURRENT_STOP = GET_NEXT_STOP();
             }
         } catch (Exception e) {
             System.out.println("ERROR: " + e.getMessage());
@@ -129,7 +129,7 @@ public class BUS extends Thread {
      *
      * @return The bus' next stop.
      */
-    public City get_next_stop() {
+    public CITY GET_NEXT_STOP() {
         return null;
     }
 }

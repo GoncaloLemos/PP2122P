@@ -5,8 +5,8 @@
 package controllers;
 
 import models.BUS;
-import models.BusType;
-import models.City;
+import models.BUS_TYPE;
+import models.CITY;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 
-public class Simulator {
-    public Simulator() {
+public class SIMULATOR {
+    public SIMULATOR() {
         JSONObject JSON = null;
         try {
             JSON = (JSONObject) new JSONParser().parse(new FileReader("./src/config.json"));
@@ -33,39 +33,39 @@ public class Simulator {
         int NUMBER_OF_LONG_DRIVE = JSON.get("NUMBER_OF_LONG_DRIVE") instanceof Long ? ((Long) JSON.get("NUMBER_OF_LONG_DRIVE")).intValue() : (int) JSON.get("NUMBER_OF_LONG_DRIVE");
         int NUMBER_OF_EXPRESSO = JSON.get("NUMBER_OF_EXPRESSO") instanceof Long ? ((Long) JSON.get("NUMBER_OF_EXPRESSO")).intValue() : (int) JSON.get("NUMBER_OF_EXPRESSO");
         for (int i = 0; i < NUMBER_OF_MINI_BUS; i++) {
-            City ORIGIN = City.values()[new Random().nextInt(City.values().length)];
-            City DESTINATION = City.values()[new Random().nextInt(City.values().length)];
+            CITY ORIGIN = CITY.values()[new Random().nextInt(CITY.values().length)];
+            CITY DESTINATION = CITY.values()[new Random().nextInt(CITY.values().length)];
             while (DESTINATION == ORIGIN) {
-                DESTINATION = City.values()[new Random().nextInt(City.values().length)];
+                DESTINATION = CITY.values()[new Random().nextInt(CITY.values().length)];
             }
-            BUS BUS_THREAD = new BUS("Bus Mini_Bus #" + i + 1, BusType.Mini_Bus, ORIGIN, DESTINATION);
+            BUS BUS_THREAD = new BUS("Bus Mini_Bus #" + i + 1, BUS_TYPE.MINI_BUS, ORIGIN, DESTINATION);
             BUS_THREAD.start();
         }
         for (int i = 0; i < NUMBER_OF_CONVENCIONAL; i++) {
-            City ORIGIN = City.values()[new Random().nextInt(City.values().length)];
-            City DESTINATION = City.values()[new Random().nextInt(City.values().length)];
+            CITY ORIGIN = CITY.values()[new Random().nextInt(CITY.values().length)];
+            CITY DESTINATION = CITY.values()[new Random().nextInt(CITY.values().length)];
             while (DESTINATION == ORIGIN) {
-                DESTINATION = City.values()[new Random().nextInt(City.values().length)];
+                DESTINATION = CITY.values()[new Random().nextInt(CITY.values().length)];
             }
-            BUS BUS_THREAD = new BUS("Bus Convencional #" + i + 1, BusType.Convencional, ORIGIN, DESTINATION);
+            BUS BUS_THREAD = new BUS("Bus Convencional #" + i + 1, BUS_TYPE.CONVENTIONAL, ORIGIN, DESTINATION);
             BUS_THREAD.start();
         }
         for (int i = 0; i < NUMBER_OF_LONG_DRIVE; i++) {
-            City ORIGIN = City.values()[new Random().nextInt(City.values().length)];
-            City DESTINATION = City.values()[new Random().nextInt(City.values().length)];
+            CITY ORIGIN = CITY.values()[new Random().nextInt(CITY.values().length)];
+            CITY DESTINATION = CITY.values()[new Random().nextInt(CITY.values().length)];
             while (DESTINATION == ORIGIN) {
-                DESTINATION = City.values()[new Random().nextInt(City.values().length)];
+                DESTINATION = CITY.values()[new Random().nextInt(CITY.values().length)];
             }
-            BUS BUS_THREAD = new BUS("Bus Long_Drive #" + i + 1, BusType.Long_Drive, ORIGIN, DESTINATION);
+            BUS BUS_THREAD = new BUS("Bus Long_Drive #" + i + 1, BUS_TYPE.LONG_DRIVE, ORIGIN, DESTINATION);
             BUS_THREAD.start();
         }
         for (int i = 0; i < NUMBER_OF_EXPRESSO; i++) {
-            City ORIGIN = City.values()[new Random().nextInt(Arrays.stream(City.values()).filter(j -> j == City.Cascais || j == City.Coimbra).toArray().length)];
-            City DESTINATION = City.values()[new Random().nextInt(Arrays.stream(City.values()).filter(j -> j == City.Cascais || j == City.Coimbra).toArray().length)];
+            CITY ORIGIN = CITY.values()[new Random().nextInt(Arrays.stream(CITY.values()).filter(j -> j == CITY.Cascais || j == CITY.Coimbra).toArray().length)];
+            CITY DESTINATION = CITY.values()[new Random().nextInt(Arrays.stream(CITY.values()).filter(j -> j == CITY.Cascais || j == CITY.Coimbra).toArray().length)];
             while (DESTINATION == ORIGIN) {
-                DESTINATION = City.values()[new Random().nextInt(Arrays.stream(City.values()).filter(j -> j == City.Cascais || j == City.Coimbra).toArray().length)];
+                DESTINATION = CITY.values()[new Random().nextInt(Arrays.stream(CITY.values()).filter(j -> j == CITY.Cascais || j == CITY.Coimbra).toArray().length)];
             }
-            BUS BUS_THREAD = new BUS("Bus Expresso #" + i + 1, BusType.Expresso, ORIGIN, DESTINATION);
+            BUS BUS_THREAD = new BUS("Bus Expresso #" + i + 1, BUS_TYPE.EXPRESS, ORIGIN, DESTINATION);
             BUS_THREAD.start();
         }
     }

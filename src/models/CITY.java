@@ -4,7 +4,7 @@
 
 package models;
 
-public enum City {
+public enum CITY {
     Lisboa,
     Porto,
     Braga,
