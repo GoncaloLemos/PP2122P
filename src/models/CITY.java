@@ -5,9 +5,9 @@
 package models;
 
 public enum CITY {
-    Lisboa,
-    Porto,
-    Braga,
-    Cascais,
-    Coimbra,
+    LISBOA,
+    PORTO,
+    BRAGA,
+    CASCAIS,
+    COIMBRA,
 }

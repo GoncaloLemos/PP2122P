@@ -60,10 +60,10 @@ public class SIMULATOR {
             BUS_THREAD.start();
         }
         for (int i = 0; i < NUMBER_OF_EXPRESSO; i++) {
-            CITY ORIGIN = CITY.values()[new Random().nextInt(Arrays.stream(CITY.values()).filter(j -> j == CITY.Cascais || j == CITY.Coimbra).toArray().length)];
-            CITY DESTINATION = CITY.values()[new Random().nextInt(Arrays.stream(CITY.values()).filter(j -> j == CITY.Cascais || j == CITY.Coimbra).toArray().length)];
+            CITY ORIGIN = CITY.values()[new Random().nextInt(Arrays.stream(CITY.values()).filter(j -> j == CITY.CASCAIS || j == CITY.COIMBRA).toArray().length)];
+            CITY DESTINATION = CITY.values()[new Random().nextInt(Arrays.stream(CITY.values()).filter(j -> j == CITY.CASCAIS || j == CITY.COIMBRA).toArray().length)];
             while (DESTINATION == ORIGIN) {
-                DESTINATION = CITY.values()[new Random().nextInt(Arrays.stream(CITY.values()).filter(j -> j == CITY.Cascais || j == CITY.Coimbra).toArray().length)];
+                DESTINATION = CITY.values()[new Random().nextInt(Arrays.stream(CITY.values()).filter(j -> j == CITY.CASCAIS || j == CITY.COIMBRA).toArray().length)];
             }
             BUS BUS_THREAD = new BUS("Bus Expresso #" + i + 1, BUS_TYPE.EXPRESS, ORIGIN, DESTINATION);
             BUS_THREAD.start();
