@@ -38,7 +38,7 @@ public class SIMULATOR {
             while (DESTINATION == ORIGIN) {
                 DESTINATION = CITY.values()[new Random().nextInt(CITY.values().length)];
             }
-            BUS BUS_THREAD = new BUS("Bus Mini_Bus #" + i + 1, BUS_TYPE.MINI_BUS, ORIGIN, DESTINATION);
+            BUS BUS_THREAD = new BUS("Mini_Bus #" + i + 1, BUS_TYPE.MINI_BUS, ORIGIN, DESTINATION);
             BUS_THREAD.start();
             try {
                 BUS_THREAD.join();
@@ -52,7 +52,7 @@ public class SIMULATOR {
             while (DESTINATION == ORIGIN) {
                 DESTINATION = CITY.values()[new Random().nextInt(CITY.values().length)];
             }
-            BUS BUS_THREAD = new BUS("Bus Convencional #" + i + 1, BUS_TYPE.CONVENTIONAL, ORIGIN, DESTINATION);
+            BUS BUS_THREAD = new BUS("Convencional #" + i + 1, BUS_TYPE.CONVENTIONAL, ORIGIN, DESTINATION);
             BUS_THREAD.start();
             try {
                 BUS_THREAD.join();
@@ -66,7 +66,7 @@ public class SIMULATOR {
             while (DESTINATION == ORIGIN) {
                 DESTINATION = CITY.values()[new Random().nextInt(CITY.values().length)];
             }
-            BUS BUS_THREAD = new BUS("Bus Long_Drive #" + i + 1, BUS_TYPE.LONG_DRIVE, ORIGIN, DESTINATION);
+            BUS BUS_THREAD = new BUS("Long_Drive #" + i + 1, BUS_TYPE.LONG_DRIVE, ORIGIN, DESTINATION);
             BUS_THREAD.start();
             try {
                 BUS_THREAD.join();
@@ -80,7 +80,7 @@ public class SIMULATOR {
             while (DESTINATION == ORIGIN) {
                 DESTINATION = CITY.values()[new Random().nextInt(Arrays.stream(CITY.values()).filter(j -> j == CITY.CASCAIS || j == CITY.COIMBRA).toArray().length)];
             }
-            BUS BUS_THREAD = new BUS("Bus Expresso #" + i + 1, BUS_TYPE.EXPRESS, ORIGIN, DESTINATION);
+            BUS BUS_THREAD = new BUS("Expresso #" + i + 1, BUS_TYPE.EXPRESS, ORIGIN, DESTINATION);
             BUS_THREAD.start();
             try {
                 BUS_THREAD.join();
