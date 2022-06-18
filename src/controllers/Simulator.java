@@ -39,13 +39,8 @@ public class Simulator {
                 destination = City.values()[new Random().nextInt(City.values().length)];
                 // List.of(City.values()).get(new Random().nextInt(City.values().length))
             }
-            Bus bus = new Bus("Bus Mini_Bus #" + i, BusType.Mini_Bus, origin, destination);
+            Bus bus = new Bus("Bus Mini_Bus #" + i + 1, BusType.Mini_Bus, origin, destination);
             bus.start();
-//            try {
-//                bus.join();
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
         }
         for (int i = 0; i < NUMBER_OF_CONVENCIONAL; i++) {
             City origin = City.values()[new Random().nextInt(City.values().length)];
@@ -54,7 +49,7 @@ public class Simulator {
                 destination = City.values()[new Random().nextInt(City.values().length)];
                 // List.of(City.values()).get(new Random().nextInt(City.values().length))
             }
-            Bus bus = new Bus("Bus Convencional #" + i, BusType.Convencional, origin, destination);
+            Bus bus = new Bus("Bus Convencional #" + i + 1, BusType.Convencional, origin, destination);
             bus.start();
         }
         for (int i = 0; i < NUMBER_OF_LONG_DRIVE; i++) {
@@ -64,7 +59,7 @@ public class Simulator {
                 destination = City.values()[new Random().nextInt(City.values().length)];
                 // List.of(City.values()).get(new Random().nextInt(City.values().length))
             }
-            Bus bus = new Bus("Bus Long_Drive #" + i, BusType.Long_Drive, origin, destination);
+            Bus bus = new Bus("Bus Long_Drive #" + i + 1, BusType.Long_Drive, origin, destination);
             bus.start();
         }
         for (int i = 0; i < NUMBER_OF_EXPRESSO; i++) {
@@ -74,7 +69,7 @@ public class Simulator {
                 destination = City.values()[new Random().nextInt(Arrays.stream(City.values()).filter(j -> j == City.Cascais || j == City.Coimbra).toArray().length)];
                 // List.of(City.values()).get(new Random().nextInt(Arrays.stream(City.values()).filter(j -> j == City.Cascais || j == City.Coimbra).toArray().length)))
             }
-            Bus bus = new Bus("Bus Expresso #" + i, BusType.Expresso, origin, destination);
+            Bus bus = new Bus("Bus Expresso #" + i + 1, BusType.Expresso, origin, destination);
             bus.start();
         }
     }

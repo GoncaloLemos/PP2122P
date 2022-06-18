@@ -106,10 +106,12 @@ public class Bus extends Thread {
         try {
             while (this.has_next_stop()) {
                 System.out.println("\n============================================================\n" +
-                        this.getName() + ", that started in " + this.getOrigin() + ", is going to " + this.get_next_stop().name() + "." +
-                        "\nIt has " + this.getCurrentCapacity() + " seats left." +
-                        "\nAnd it's carrying " + this.getCurrentPassengers() + " passengers." +
-                        "\nIt's current delay between two stops is " + this.getSpeed() + "ms." +
+                        this.getName() + ":" +
+                        "\nOrigin: " + this.getOrigin() +
+                        "\nDestination: " + this.getDestination() +
+                        "\nCurrent Stop: " + this.get_next_stop().name() +
+                        "\nCurrent Passengers: " + this.getCurrentPassengers() +
+                        "\nLeftover Seats: " + this.getCurrentCapacity() +
                         "\n============================================================");
                 this.setCurrentPassengers(new Random().nextInt(this.getMaxCapacity() + 1));
                 Thread.sleep(this.getSpeed());
@@ -118,6 +120,9 @@ public class Bus extends Thread {
         } catch (Exception e) {
             System.out.println("ERROR: " + e.getMessage());
         } finally {
+            System.out.println("\n============================================================\n" +
+                    this.getName() + " has arrived to " + this.getDestination() + "." +
+                    "\n============================================================");
             this.setCurrentPassengers(0);
         }
     }
