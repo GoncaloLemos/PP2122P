@@ -22,9 +22,21 @@ import java.util.TimerTask;
 public class SIMULATOR {
 
     ///////////ATTRIBUTES///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * The amount mini buses.
+     */
     final int NUMBER_OF_MINI_BUS;
+    /**
+     * The amount conventional buses.
+     */
     final int NUMBER_OF_CONVENCIONAL;
+    /**
+     * The amount long drive buses.
+     */
     final int NUMBER_OF_LONG_DRIVE;
+    /**
+     * The
+     */
     final int NUMBER_OF_EXPRESSO;
     final int MINIMUM_DELAY_FOR_MALFUNCTION_EXECUTION;
     final int MAXIMUM_DELAY_FOR_MALFUNCTION_EXECUTION;
@@ -174,7 +186,7 @@ public class SIMULATOR {
      * Stops the bus, for a given delay.
      *
      * @param BUSTYPE    The type of bus to be stopped.
-     * @param BUS_NUMBER The number of bus to be stopped.
+     * @param BUS_NUMBER The amount bus to be stopped.
      * @param STOP_TIME  The time to wait before stopping the bus.
      */
     public void stopBus(final String BUSTYPE, final String BUS_NUMBER, final int STOP_TIME) {
@@ -199,7 +211,7 @@ public class SIMULATOR {
      * Refeuls the bus.
      *
      * @param BUSTYPE    The type of bus to be resumed.
-     * @param BUS_NUMBER The number of bus to be resumed.
+     * @param BUS_NUMBER The amount bus to be resumed.
      */
     public void refuel(final String BUSTYPE, final String BUS_NUMBER) {
         BUS_TYPE BT = switch (BUSTYPE) {
@@ -223,7 +235,7 @@ public class SIMULATOR {
      * Switches the driver of the bus.
      *
      * @param BUSTYPE    The type of bus to be paused.
-     * @param BUS_NUMBER The number of bus to be paused.
+     * @param BUS_NUMBER The amount bus to be paused.
      */
     public void switchDriver(final String BUSTYPE, final String BUS_NUMBER) {
         BUS_TYPE BT = switch (BUSTYPE) {
@@ -247,7 +259,7 @@ public class SIMULATOR {
      * Stops the bus for maintenance.
      *
      * @param BUSTYPE    The type of bus to be stopped.
-     * @param BUS_NUMBER The number of bus to be stopped.
+     * @param BUS_NUMBER The amount bus to be stopped.
      */
     public void stopForMaintenance(final String BUSTYPE, final String BUS_NUMBER) {
         BUS_TYPE BT = switch (BUSTYPE) {
