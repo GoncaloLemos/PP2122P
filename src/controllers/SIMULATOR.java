@@ -25,13 +25,13 @@ public class SIMULATOR {
             JSON = (JSONObject) new JSONParser().parse(new FileReader("./src/config.json"));
         } catch (IOException e) {
             System.err.println("""
-                    |ERROR: Could not read config.json file.
-                    |Please make sure it is in the same directory as the program.""");
+                    ERROR: Could not read config.json file.
+                    Please make sure it is in the same directory as the program.""");
             System.exit(1);
         } catch (ParseException e) {
             System.err.println("""
-                    |ERROR: Could not parse config.json file.
-                    |Please make sure it is in the same directory as the program.""");
+                    ERROR: Could not parse config.json file.
+                    Please make sure it is in the same directory as the program.""");
             System.exit(1);
         }
         System.out.println("""
@@ -97,7 +97,11 @@ public class SIMULATOR {
             try {
                 BUS_THREAD.join();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.err.println("""
+                        An error occurred while waiting for the bus to finish its journey.
+                        The program will now exit.
+                        """);
+                System.exit(1);
             }
         }
         System.out.println("""

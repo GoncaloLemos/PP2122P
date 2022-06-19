@@ -53,13 +53,13 @@ public class BUS extends Thread {
             JSON = (JSONObject) new JSONParser().parse(new FileReader("./src/config.json"));
         } catch (IOException e) {
             System.err.println("""
-                    |ERROR: Could not read config.json file.
-                    |Please make sure it is in the same directory as the program.""");
+                    ERROR: Could not read config.json file.
+                    Please make sure it is in the same directory as the program.""");
             System.exit(1);
         } catch (ParseException e) {
             System.err.println("""
-                    |ERROR: Could not parse config.json file.
-                    |Please make sure it is in the same directory as the program.""");
+                    ERROR: Could not parse config.json file.
+                    Please make sure it is in the same directory as the program.""");
             System.exit(1);
         }
         TYPE = BUS_TYPE;
