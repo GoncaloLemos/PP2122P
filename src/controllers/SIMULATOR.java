@@ -2,6 +2,12 @@
  * Copyright © 2022, Pedro S.. All rights reserved.
  */
 
+package controllers;
+
+import models.BUS;
+import models.BUS_STOP;
+import models.BUS_TYPE;
+import models.MALFUNCTION_TYPE;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -14,10 +20,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class SIMULATOR {
-
-    ///////////ATTRIBUTES///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private final BUS[] BUS_COLLECTION;
-
     ///////////CONSTRUCTOR////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public SIMULATOR() {
         JSONObject JSON = null;
@@ -34,15 +36,32 @@ public class SIMULATOR {
                     Please make sure it is in the same directory as the program.""");
             System.exit(1);
         }
-        System.out.println("""
-                ========================================================
-                                   SIMULATION STARTED
-                ========================================================""");
-        ///////////CONFIGURATION FILE VARIABLES/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        final int MINIMUM_FLEET_SIZE = Integer.parseInt(JSON.get("MINIMUM_FLEET_SIZE").toString());
+        final int MAXIMUM_FLEET_SIZE = Integer.parseInt(JSON.get("MAXIMUM_FLEET_SIZE").toString());
         final int NUMBER_OF_MINI_BUS = Integer.parseInt(JSON.get("NUMBER_OF_MINI_BUS").toString());
         final int NUMBER_OF_CONVENCIONAL = Integer.parseInt(JSON.get("NUMBER_OF_CONVENCIONAL").toString());
         final int NUMBER_OF_LONG_DRIVE = Integer.parseInt(JSON.get("NUMBER_OF_LONG_DRIVE").toString());
         final int NUMBER_OF_EXPRESSO = Integer.parseInt(JSON.get("NUMBER_OF_EXPRESSO").toString());
+        if (MINIMUM_FLEET_SIZE > MAXIMUM_FLEET_SIZE) {
+            System.err.println("""
+                    ERROR: MINIMUM_FLEET_SIZE must be less than or equal to MAXIMUM_FLEET_SIZE.""");
+            System.exit(1);
+        }
+        if (NUMBER_OF_MINI_BUS + NUMBER_OF_CONVENCIONAL + NUMBER_OF_LONG_DRIVE + NUMBER_OF_EXPRESSO > MAXIMUM_FLEET_SIZE) {
+            System.err.println("""
+                    ERROR: The sum of the number of buses of each type must be less than or equal to MAXIMUM_FLEET_SIZE.""");
+            System.exit(1);
+        }
+        if (NUMBER_OF_MINI_BUS < 1 || NUMBER_OF_CONVENCIONAL < 1 || NUMBER_OF_LONG_DRIVE < 1 || NUMBER_OF_EXPRESSO < 1) {
+            System.err.println("""
+                    ERROR: The number of buses of each type must be greater than or equal to 1.""");
+            System.exit(1);
+        }
+        if (NUMBER_OF_MINI_BUS + NUMBER_OF_CONVENCIONAL + NUMBER_OF_LONG_DRIVE + NUMBER_OF_EXPRESSO < MINIMUM_FLEET_SIZE) {
+            System.err.println("""
+                    ERROR: The sum of the number of buses of each type must be greater than or equal to MINIMUM_FLEET_SIZE.""");
+            System.exit(1);
+        }
         final int MINIMUM_DELAY_FOR_MALFUNCTION_EXECUTION = Integer.parseInt(JSON.get("MINIMUM_DELAY_FOR_MALFUNCTION_EXECUTION").toString());
         final int MAXIMUM_DELAY_FOR_MALFUNCTION_EXECUTION = Integer.parseInt(JSON.get("MAXIMUM_DELAY_FOR_MALFUNCTION_EXECUTION").toString());
         final int MAX_CAPACITY_MINI_BUS = Integer.parseInt(JSON.get("MAX_CAPACITY_MINI_BUS").toString());
@@ -56,42 +75,46 @@ public class SIMULATOR {
         final int FLAT_TIRE_DELAY_FOR_MALFUNCTION_EXECUTION = Integer.parseInt(JSON.get("FLAT_TIRE_DELAY_FOR_MALFUNCTION_EXECUTION").toString());
         final int COOLING_SYSTEM_DELAY_FOR_MALFUNCTION_EXECUTION = Integer.parseInt(JSON.get("COOLING_SYSTEM_DELAY_FOR_MALFUNCTION_EXECUTION").toString());
         final int COLLISION_DELAY_FOR_MALFUNCTION_EXECUTION = Integer.parseInt(JSON.get("COLLISION_DELAY_FOR_MALFUNCTION_EXECUTION").toString());
-        BUS_COLLECTION = new BUS[NUMBER_OF_MINI_BUS + NUMBER_OF_CONVENCIONAL + NUMBER_OF_LONG_DRIVE + NUMBER_OF_EXPRESSO];
+        System.out.println("""
+                ========================================================
+                                   SIMULATION STARTED
+                ========================================================""");
+        final BUS[] BUS_COLLECTION = new BUS[NUMBER_OF_MINI_BUS + NUMBER_OF_CONVENCIONAL + NUMBER_OF_LONG_DRIVE + NUMBER_OF_EXPRESSO];
         for (int i = 0; i < NUMBER_OF_MINI_BUS; i++) {
-            CITY ORIGIN = CITY.values()[new Random().nextInt(CITY.values().length)];
-            CITY DESTINATION = CITY.values()[new Random().nextInt(CITY.values().length)];
+            BUS_STOP ORIGIN = BUS_STOP.values()[new Random().nextInt(BUS_STOP.values().length)];
+            BUS_STOP DESTINATION = BUS_STOP.values()[new Random().nextInt(BUS_STOP.values().length)];
             while (DESTINATION == ORIGIN) {
-                DESTINATION = CITY.values()[new Random().nextInt(CITY.values().length)];
+                DESTINATION = BUS_STOP.values()[new Random().nextInt(BUS_STOP.values().length)];
             }
             BUS BUS_THREAD = new BUS("MINI_BUS #" + (i + 1), BUS_TYPE.MINI_BUS, ORIGIN, DESTINATION, MAX_CAPACITY_MINI_BUS, BASE_SPEED_MINI_BUS);
             BUS_THREAD.start();
             BUS_COLLECTION[i] = BUS_THREAD;
         }
         for (int i = 0; i < NUMBER_OF_CONVENCIONAL; i++) {
-            CITY ORIGIN = CITY.values()[new Random().nextInt(CITY.values().length)];
-            CITY DESTINATION = CITY.values()[new Random().nextInt(CITY.values().length)];
+            BUS_STOP ORIGIN = BUS_STOP.values()[new Random().nextInt(BUS_STOP.values().length)];
+            BUS_STOP DESTINATION = BUS_STOP.values()[new Random().nextInt(BUS_STOP.values().length)];
             while (DESTINATION == ORIGIN) {
-                DESTINATION = CITY.values()[new Random().nextInt(CITY.values().length)];
+                DESTINATION = BUS_STOP.values()[new Random().nextInt(BUS_STOP.values().length)];
             }
             BUS BUS_THREAD = new BUS("CONVENCIONAL #" + (i + 1), BUS_TYPE.CONVENTIONAL, ORIGIN, DESTINATION, MAX_CAPACITY_CONVENCIONAL, BASE_SPEED_CONVENCIONAL);
             BUS_THREAD.start();
             BUS_COLLECTION[i + NUMBER_OF_MINI_BUS] = BUS_THREAD;
         }
         for (int i = 0; i < NUMBER_OF_LONG_DRIVE; i++) {
-            CITY ORIGIN = CITY.values()[new Random().nextInt(CITY.values().length)];
-            CITY DESTINATION = CITY.values()[new Random().nextInt(CITY.values().length)];
+            BUS_STOP ORIGIN = BUS_STOP.values()[new Random().nextInt(BUS_STOP.values().length)];
+            BUS_STOP DESTINATION = BUS_STOP.values()[new Random().nextInt(BUS_STOP.values().length)];
             while (DESTINATION == ORIGIN) {
-                DESTINATION = CITY.values()[new Random().nextInt(CITY.values().length)];
+                DESTINATION = BUS_STOP.values()[new Random().nextInt(BUS_STOP.values().length)];
             }
             BUS BUS_THREAD = new BUS("LONG_DRIVE #" + (i + 1), BUS_TYPE.LONG_DRIVE, ORIGIN, DESTINATION, MAX_CAPACITY_LONG_DRIVE, BASE_SPEED_LONG_DRIVE);
             BUS_THREAD.start();
             BUS_COLLECTION[i + NUMBER_OF_MINI_BUS + NUMBER_OF_CONVENCIONAL] = BUS_THREAD;
         }
         for (int i = 0; i < NUMBER_OF_EXPRESSO; i++) {
-            CITY ORIGIN = CITY.values()[new Random().nextInt(Arrays.stream(CITY.values()).filter(j -> j == CITY.CASCAIS || j == CITY.COIMBRA).toArray().length)];
-            CITY DESTINATION = CITY.values()[new Random().nextInt(Arrays.stream(CITY.values()).filter(j -> j == CITY.CASCAIS || j == CITY.COIMBRA).toArray().length)];
+            BUS_STOP ORIGIN = BUS_STOP.values()[new Random().nextInt(Arrays.stream(BUS_STOP.values()).filter(j -> j == BUS_STOP.CASCAIS || j == BUS_STOP.COIMBRA).toArray().length)];
+            BUS_STOP DESTINATION = BUS_STOP.values()[new Random().nextInt(Arrays.stream(BUS_STOP.values()).filter(j -> j == BUS_STOP.CASCAIS || j == BUS_STOP.COIMBRA).toArray().length)];
             while (DESTINATION == ORIGIN) {
-                DESTINATION = CITY.values()[new Random().nextInt(Arrays.stream(CITY.values()).filter(j -> j == CITY.CASCAIS || j == CITY.COIMBRA).toArray().length)];
+                DESTINATION = BUS_STOP.values()[new Random().nextInt(Arrays.stream(BUS_STOP.values()).filter(j -> j == BUS_STOP.CASCAIS || j == BUS_STOP.COIMBRA).toArray().length)];
             }
             BUS BUS_THREAD = new BUS("EXPRESS #" + (i + 1), BUS_TYPE.EXPRESS, ORIGIN, DESTINATION, MAX_CAPACITY_EXPRESSO, BASE_SPEED_EXPRESSO);
             BUS_THREAD.start();
@@ -132,10 +155,5 @@ public class SIMULATOR {
                 ========================================================""");
         MALFUNCTION_TIMER.cancel();
         System.exit(0);
-    }
-
-    ///////////METHODS///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public void STOP_BUS_FOR(final String TYPE, final String BUS_NUMBER, final int STOP_TIME) {
-        Arrays.stream(BUS_COLLECTION).filter(BUS_THREAD -> BUS_THREAD.GET_TYPE().toString().equals(TYPE) && BUS_THREAD.getName().equals(TYPE + " #" + BUS_NUMBER)).findFirst().ifPresent(BUS_THREAD -> BUS_THREAD.PAUSE(STOP_TIME));
     }
 }
