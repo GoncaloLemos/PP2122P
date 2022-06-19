@@ -4,21 +4,21 @@
 
 package models;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-// BUS is the class that represents a bus. It is essentially a thread that runs as long as the bus hasn't reached its destination.
 public class BUS extends Thread {
     ///////////ATTRIBUTES///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private final int MAX_CAPACITY;
-    private final BUS_TYPE TYPE; // Atribute that represents the type of the bus.
-    private final BUS_STOP DESTINATION; // Atribute that represents the destination of the bus.
-    private final BUS_STOP ORIGIN; // Atribute that represents the origin of the bus.
-    private final int TRAVEL_DELAY; // Atribute that represents the time (in milliseconds) the bus takes between two stops.
-    private BUS_STOP CURRENT_STOP; // Atribute that represents the current stop of the bus.
-    private int CURRENT_PASSENGERS = 0; // Atribute that represents the current amount passengers in the bus.
-    private boolean IS_PAUSED = false; // Atribute that represents if the bus is paused. The bus only pauses when it malfunctions or if the manager requests it.
-    private int PAUSE_DURATION = 0; // Atribute that represents the duration of the pause.
+    private final BUS_TYPE TYPE;
+    private final BUS_STOP DESTINATION;
+    private final BUS_STOP ORIGIN;
+    private final int TRAVEL_DELAY;
+    private BUS_STOP CURRENT_STOP;
+    private int CURRENT_PASSENGERS = 0;
+    private boolean IS_PAUSED = false;
+    private int PAUSE_DURATION = 0;
 
     ///////////CONSTRUCTOR////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public BUS(final String THREAD_NAME, final BUS_TYPE TYPE, final BUS_STOP DESTINATION, final BUS_STOP ORIGIN, final int MAX_CAPACITY, final int TRAVEL_DELAY) {
@@ -69,8 +69,8 @@ public class BUS extends Thread {
 
     ///////////METHODS///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public BUS_STOP GET_NEXT_STOP() {
-        BUS_STOP[] STOPS = new BUS_STOP[]{BUS_STOP.CASCAIS, BUS_STOP.LISBOA, BUS_STOP.COIMBRA, BUS_STOP.PORTO, BUS_STOP.BRAGA};
-        BUS_STOP[] STOPS_EXPRESS = new BUS_STOP[]{BUS_STOP.LISBOA, BUS_STOP.PORTO, BUS_STOP.BRAGA};
+        BUS_STOP[] STOPS = BUS_STOP.values();
+        BUS_STOP[] STOPS_EXPRESS = Arrays.stream(BUS_STOP.values()).filter(j -> j != BUS_STOP.CASCAIS && j != BUS_STOP.COIMBRA).toArray(BUS_STOP[]::new);
         return CURRENT_STOP == DESTINATION ? null : TYPE == BUS_TYPE.EXPRESS ? IntStream.range(0, STOPS_EXPRESS.length).filter(i -> ORIGIN == STOPS_EXPRESS[i]).findFirst().getAsInt() < IntStream.range(0, STOPS_EXPRESS.length).filter(i -> DESTINATION == STOPS_EXPRESS[i]).findFirst().getAsInt() ? STOPS_EXPRESS[IntStream.range(0, STOPS_EXPRESS.length).filter(i -> CURRENT_STOP == STOPS_EXPRESS[i]).findFirst().getAsInt() + 1] : STOPS_EXPRESS[IntStream.range(0, STOPS_EXPRESS.length).filter(i -> CURRENT_STOP == STOPS_EXPRESS[i]).findFirst().getAsInt() - 1] : IntStream.range(0, STOPS.length).filter(i -> ORIGIN == STOPS[i]).findFirst().getAsInt() < IntStream.range(0, STOPS.length).filter(i -> DESTINATION == STOPS[i]).findFirst().getAsInt() ? STOPS[IntStream.range(0, STOPS.length).filter(i -> CURRENT_STOP == STOPS[i]).findFirst().getAsInt() + 1] : STOPS[IntStream.range(0, STOPS.length).filter(i -> CURRENT_STOP == STOPS[i]).findFirst().getAsInt() - 1];
     }
 
