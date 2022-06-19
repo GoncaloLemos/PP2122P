@@ -2,8 +2,6 @@
  * Copyright © 2022, Pedro S.. All rights reserved.
  */
 
-package models;
-
 public enum BUS_TYPE {
     /**
      * The same as the conventional one, allowing the transport of only 24 passengers.
