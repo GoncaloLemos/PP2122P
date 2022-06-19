@@ -16,7 +16,7 @@ public class CLI {
             final var line = scanner.nextLine();
             final String[] commands = line.split(" ");
             switch (commands[0]) {
-                case "show" -> simulator.show();
+//                case "show" -> simulator.show();
                 case "stop_bus" -> simulator.stopBus(commands[1], commands[2], Integer.parseInt(commands[3]));
                 case "refuel" -> simulator.refuel(commands[1], commands[2]);
                 case "switch_driver" -> simulator.switchDriver(commands[1], commands[2]);
