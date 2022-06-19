@@ -52,10 +52,14 @@ public class BUS extends Thread {
         try {
             JSON = (JSONObject) new JSONParser().parse(new FileReader("./src/config.json"));
         } catch (IOException e) {
-            System.out.println("Error reading config.json.");
+            System.err.println("""
+                    |ERROR: Could not read config.json file.
+                    |Please make sure it is in the same directory as the program.""");
             System.exit(1);
         } catch (ParseException e) {
-            System.out.println("Error parsing config.json.");
+            System.err.println("""
+                    |ERROR: Could not parse config.json file.
+                    |Please make sure it is in the same directory as the program.""");
             System.exit(1);
         }
         TYPE = BUS_TYPE;
@@ -90,10 +94,9 @@ public class BUS extends Thread {
 
     @Override
     public void run() {
-        super.run();
         try {
             while (this.GET_NEXT_STOP() != null) {
-                System.out.println("\n============================================================\n" + this.getName() + ":" + "\nOrigin: " + ORIGIN + "\nDestination: " + DESTINATION + "\nCurrent Stop: " + this.GET_NEXT_STOP().name() + "\nCurrent Passengers: " + CURRENT_PASSENGERS + "\nLeftover Seats: " + (MAX_CAPACITY - CURRENT_PASSENGERS) + "\n============================================================");
+                System.out.println("\n============================================================\n" + this.getName() + ":\n" + ORIGIN + " --> " + DESTINATION + "\nCurrent Stop: " + CURRENT_STOP + "\nCurrent Passengers: " + CURRENT_PASSENGERS + "\n============================================================");
                 CURRENT_PASSENGERS = new Random().nextInt(MAX_CAPACITY + 1);
                 Thread.sleep(SPEED);
                 CURRENT_STOP = GET_NEXT_STOP();
@@ -114,7 +117,7 @@ public class BUS extends Thread {
         if (CURRENT_STOP == DESTINATION) return null;
         return switch (TYPE) {
             case EXPRESS ->
-                    IntStream.range(0, STOPS_EXPRESS.length).filter(i -> ORIGIN == STOPS_EXPRESS[i]).findFirst().getAsInt() < IntStream.range(0, STOPS_EXPRESS.length).filter(i -> DESTINATION == STOPS_EXPRESS[i]).findFirst().getAsInt() ? STOPS[IntStream.range(0, STOPS_EXPRESS.length).filter(i -> CURRENT_STOP == STOPS_EXPRESS[i]).findFirst().getAsInt() + 1] : STOPS[IntStream.range(0, STOPS_EXPRESS.length).filter(i -> CURRENT_STOP == STOPS_EXPRESS[i]).findFirst().getAsInt() - 1];
+                    IntStream.range(0, STOPS_EXPRESS.length).filter(i -> ORIGIN == STOPS_EXPRESS[i]).findFirst().getAsInt() < IntStream.range(0, STOPS_EXPRESS.length).filter(i -> DESTINATION == STOPS_EXPRESS[i]).findFirst().getAsInt() ? STOPS_EXPRESS[IntStream.range(0, STOPS_EXPRESS.length).filter(i -> CURRENT_STOP == STOPS_EXPRESS[i]).findFirst().getAsInt() + 1] : STOPS_EXPRESS[IntStream.range(0, STOPS_EXPRESS.length).filter(i -> CURRENT_STOP == STOPS_EXPRESS[i]).findFirst().getAsInt() - 1];
             default ->
                     IntStream.range(0, STOPS.length).filter(i -> ORIGIN == STOPS[i]).findFirst().getAsInt() < IntStream.range(0, STOPS.length).filter(i -> DESTINATION == STOPS[i]).findFirst().getAsInt() ? STOPS[IntStream.range(0, STOPS.length).filter(i -> CURRENT_STOP == STOPS[i]).findFirst().getAsInt() + 1] : STOPS[IntStream.range(0, STOPS.length).filter(i -> CURRENT_STOP == STOPS[i]).findFirst().getAsInt() - 1];
         };

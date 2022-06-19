@@ -2,10 +2,10 @@
  * Copyright © 2022, Pedro S.. All rights reserved.
  */
 
-import views.CLI;
+import controllers.SIMULATOR;
 
 public class Program {
     public static void main(String[] args) {
-        new CLI();
+        new SIMULATOR();
     }
 }
