@@ -22,21 +22,10 @@ import java.util.TimerTask;
 public class SIMULATOR {
 
     ///////////ATTRIBUTES///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /**
-     * The amount mini buses.
-     */
+
     final int NUMBER_OF_MINI_BUS;
-    /**
-     * The amount conventional buses.
-     */
     final int NUMBER_OF_CONVENCIONAL;
-    /**
-     * The amount long drive buses.
-     */
     final int NUMBER_OF_LONG_DRIVE;
-    /**
-     * The
-     */
     final int NUMBER_OF_EXPRESSO;
     final int MINIMUM_DELAY_FOR_MALFUNCTION_EXECUTION;
     final int MAXIMUM_DELAY_FOR_MALFUNCTION_EXECUTION;
