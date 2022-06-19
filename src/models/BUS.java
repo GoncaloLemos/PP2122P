@@ -59,40 +59,12 @@ public class BUS extends Thread {
     }
 
     ///////////GETTERS///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public int GET_MAX_CAPACITY() {
-        return MAX_CAPACITY;
-    }
-
     public BUS_TYPE GET_TYPE() {
         return TYPE;
     }
 
-    public BUS_STOP GET_DESTINATION() {
-        return DESTINATION;
-    }
-
-    public BUS_STOP GET_ORIGIN() {
-        return ORIGIN;
-    }
-
-    public int GET_TRAVEL_DELAY() {
-        return TRAVEL_DELAY;
-    }
-
-    public BUS_STOP GET_CURRENT_STOP() {
-        return CURRENT_STOP;
-    }
-
-    public int GET_CURRENT_PASSENGERS() {
-        return CURRENT_PASSENGERS;
-    }
-
     public boolean IS_PAUSED() {
         return IS_PAUSED;
-    }
-
-    public int GET_PAUSE_DURATION() {
-        return PAUSE_DURATION;
     }
 
     ///////////METHODS///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

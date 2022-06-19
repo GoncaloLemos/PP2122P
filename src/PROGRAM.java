@@ -6,7 +6,6 @@ import controllers.SIMULATOR;
 
 public class PROGRAM {
     public static void main(String[] args) {
-        new SIMULATOR(); // Starts the simulation.
-        // The simulation will run until each bus has arrived to its destination.
+        new SIMULATOR(); // Starts the simulation. The simulation will run until each bus has arrived to its destination.
     }
 }
