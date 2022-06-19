@@ -29,7 +29,7 @@ public class BUS extends Thread {
      * It is calculated based on the bus' type.
      * It is also the maximum speed of the bus.
      */
-    private final int SPEED;
+    private final int TRAVEL_DELAY;
     /**
      * The bus' current stop.
      */
@@ -38,37 +38,47 @@ public class BUS extends Thread {
      * The bus' current amount passengers.
      */
     private int CURRENT_PASSENGERS = 0;
+    private boolean MALFUNCTIONING = false;
+    private int MALFUNCTION_DURATION = 0;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public BUS(final String THREAD_NAME, final BUS_TYPE TYPE, final CITY DESTINATION, final CITY ORIGIN, final int MAX_CAPACITY, final int SPEED) {
+    public BUS(final String THREAD_NAME, final BUS_TYPE TYPE, final CITY DESTINATION, final CITY ORIGIN, final int MAX_CAPACITY, final int TRAVEL_DELAY) {
         this.setName(THREAD_NAME);
         this.TYPE = TYPE;
         this.DESTINATION = DESTINATION;
         this.ORIGIN = ORIGIN;
         this.MAX_CAPACITY = MAX_CAPACITY;
         CURRENT_STOP = this.ORIGIN;
-        this.SPEED = SPEED;
+        this.TRAVEL_DELAY = TRAVEL_DELAY;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     public void run() {
-        try {
-            while (this.GET_NEXT_STOP() != null) {
-                CURRENT_PASSENGERS = new Random().nextInt(MAX_CAPACITY + 1);
-                System.out.println("\n============================================================\n" + this.getName() + ":\n" + ORIGIN + " --> " + DESTINATION + "\nCurrent Stop: " + CURRENT_STOP + "\nCurrent Passengers: " + CURRENT_PASSENGERS + "\n============================================================");
-                Thread.sleep(SPEED);
-                CURRENT_STOP = GET_NEXT_STOP();
-            }
-        } catch (Exception e) {
-            System.out.println("ERROR: " + e.getMessage());
-        } finally {
+        while (this.GET_NEXT_STOP() != null) {
+            CURRENT_PASSENGERS = new Random().nextInt(MAX_CAPACITY + 1);
             System.out.println("\n============================================================\n" + this.getName() + ":\n" + ORIGIN + " --> " + DESTINATION + "\nCurrent Stop: " + CURRENT_STOP + "\nCurrent Passengers: " + CURRENT_PASSENGERS + "\n============================================================");
-            System.out.println("\n============================================================\n" + this.getName() + " has arrived to " + DESTINATION + "." + "\n============================================================");
-            CURRENT_PASSENGERS = 0;
+            IntStream.range(0, TRAVEL_DELAY).forEach(i -> {
+                try {
+                    if (MALFUNCTIONING && this.getState() != State.TIMED_WAITING) {
+                        sleep(MALFUNCTION_DURATION);
+                        MALFUNCTIONING = false;
+                        System.out.println("\n===========================================================" +
+                                "\n            " + getName() + " IS BACK TO WORK." +
+                                "\n===========================================================");
+                    }
+                    sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+            CURRENT_STOP = GET_NEXT_STOP();
         }
+        System.out.println("\n============================================================\n" + this.getName() + ":\n" + ORIGIN + " --> " + DESTINATION + "\nCurrent Stop: " + CURRENT_STOP + "\nCurrent Passengers: " + CURRENT_PASSENGERS + "\n============================================================");
+        System.out.println("\n============================================================\n" + this.getName() + " has arrived to " + DESTINATION + "." + "\n============================================================");
+        CURRENT_PASSENGERS = 0;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -83,5 +93,14 @@ public class BUS extends Thread {
             default ->
                     IntStream.range(0, STOPS.length).filter(i -> ORIGIN == STOPS[i]).findFirst().getAsInt() < IntStream.range(0, STOPS.length).filter(i -> DESTINATION == STOPS[i]).findFirst().getAsInt() ? STOPS[IntStream.range(0, STOPS.length).filter(i -> CURRENT_STOP == STOPS[i]).findFirst().getAsInt() + 1] : STOPS[IntStream.range(0, STOPS.length).filter(i -> CURRENT_STOP == STOPS[i]).findFirst().getAsInt() - 1];
         };
+    }
+
+    public void MALFUNCTION(final int DURATION) {
+        MALFUNCTIONING = true;
+        MALFUNCTION_DURATION = DURATION;
+    }
+
+    public boolean IS_MALFUNCTIONING() {
+        return MALFUNCTIONING;
     }
 }

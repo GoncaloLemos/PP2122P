@@ -9,5 +9,5 @@ public enum CITY {
     PORTO,
     BRAGA,
     CASCAIS,
-    COIMBRA,
+    COIMBRA
 }
