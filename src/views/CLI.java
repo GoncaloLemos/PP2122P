@@ -11,13 +11,19 @@ import java.util.Scanner;
 public class CLI {
     public CLI() {
         final Scanner scanner = new Scanner(System.in);
-        System.out.println("Welcome to the bus simulator!");
         final SIMULATOR simulator = new SIMULATOR();
-        // TODO: Implement the CLI.
-        do {
+        while (scanner.hasNextLine()) {
             final var line = scanner.nextLine();
             final String[] commands = line.split(" ");
-            System.out.println("Instrução inválida.");
-        } while (scanner.hasNextLine());
+            switch (commands[0]) {
+                case "show" -> simulator.show();
+                case "stop_bus" -> simulator.stopBus(commands[1], commands[2], Integer.parseInt(commands[3]));
+                case "refuel" -> simulator.refuel(commands[1], commands[2]);
+                case "switch_driver" -> simulator.switchDriver(commands[1], commands[2]);
+                case "stop_for_maintenance" -> simulator.stopForMaintenance(commands[1], commands[2]);
+                case "exit" -> System.exit(0);
+                default -> System.out.println("Invalid command.");
+            }
+        }
     }
 }
