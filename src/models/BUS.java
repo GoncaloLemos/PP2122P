@@ -4,12 +4,6 @@
 
 package models;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -47,47 +41,14 @@ public class BUS extends Thread {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public BUS(final String THREAD_NAME, final BUS_TYPE BUS_TYPE, final CITY DESTINATION, final CITY ORIGIN) {
-        JSONObject JSON = null;
-        try {
-            JSON = (JSONObject) new JSONParser().parse(new FileReader("./src/config.json"));
-        } catch (IOException e) {
-            System.err.println("""
-                    ERROR: Could not read config.json file.
-                    Please make sure it is in the same directory as the program.""");
-            System.exit(1);
-        } catch (ParseException e) {
-            System.err.println("""
-                    ERROR: Could not parse config.json file.
-                    Please make sure it is in the same directory as the program.""");
-            System.exit(1);
-        }
-        TYPE = BUS_TYPE;
+    public BUS(final String THREAD_NAME, final BUS_TYPE TYPE, final CITY DESTINATION, final CITY ORIGIN, final int MAX_CAPACITY, final int SPEED) {
+        this.setName(THREAD_NAME);
+        this.TYPE = TYPE;
         this.DESTINATION = DESTINATION;
         this.ORIGIN = ORIGIN;
-        MAX_CAPACITY = switch (BUS_TYPE) {
-            case MINI_BUS ->
-                    JSON.get("MAX_CAPACITY_MINI_BUS") instanceof Long ? ((Long) JSON.get("MAX_CAPACITY_MINI_BUS")).intValue() : (int) JSON.get("MAX_CAPACITY_MINI_BUS");
-            case CONVENTIONAL ->
-                    JSON.get("MAX_CAPACITY_CONVENCIONAL") instanceof Long ? ((Long) JSON.get("MAX_CAPACITY_CONVENCIONAL")).intValue() : (int) JSON.get("MAX_CAPACITY_CONVENCIONAL");
-            case LONG_DRIVE ->
-                    JSON.get("MAX_CAPACITY_LONG_DRIVE") instanceof Long ? ((Long) JSON.get("MAX_CAPACITY_LONG_DRIVE")).intValue() : (int) JSON.get("MAX_CAPACITY_LONG_DRIVE");
-            case EXPRESS ->
-                    JSON.get("MAX_CAPACITY_EXPRESSO") instanceof Long ? ((Long) JSON.get("MAX_CAPACITY_EXPRESSO")).intValue() : (int) JSON.get("MAX_CAPACITY_EXPRESSO");
-        };
+        this.MAX_CAPACITY = MAX_CAPACITY;
         CURRENT_STOP = this.ORIGIN;
-        SPEED = switch (BUS_TYPE) {
-            case MINI_BUS ->
-                    JSON.get("BASE_SPEED_MINI_BUS") instanceof Long ? ((Long) JSON.get("BASE_SPEED_MINI_BUS")).intValue() : (int) JSON.get("BASE_SPEED_MINI_BUS");
-            case CONVENTIONAL ->
-                    JSON.get("BASE_SPEED_CONVENCIONAL") instanceof Long ? ((Long) JSON.get("BASE_SPEED_CONVENCIONAL")).intValue() : (int) JSON.get("BASE_SPEED_CONVENCIONAL");
-            case LONG_DRIVE ->
-                    JSON.get("BASE_SPEED_LONG_DRIVE") instanceof Long ? ((Long) JSON.get("BASE_SPEED_LONG_DRIVE")).intValue() : (int) JSON.get("BASE_SPEED_LONG_DRIVE");
-            case EXPRESS ->
-                    JSON.get("BASE_SPEED_EXPRESSO") instanceof Long ? ((Long) JSON.get("BASE_SPEED_EXPRESSO")).intValue() : (int) JSON.get("BASE_SPEED_EXPRESSO");
-        };
-        this.setPriority(Thread.NORM_PRIORITY);
-        this.setName(THREAD_NAME);
+        this.SPEED = SPEED;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -96,14 +57,15 @@ public class BUS extends Thread {
     public void run() {
         try {
             while (this.GET_NEXT_STOP() != null) {
-                System.out.println("\n============================================================\n" + this.getName() + ":\n" + ORIGIN + " --> " + DESTINATION + "\nCurrent Stop: " + CURRENT_STOP + "\nCurrent Passengers: " + CURRENT_PASSENGERS + "\n============================================================");
                 CURRENT_PASSENGERS = new Random().nextInt(MAX_CAPACITY + 1);
+                System.out.println("\n============================================================\n" + this.getName() + ":\n" + ORIGIN + " --> " + DESTINATION + "\nCurrent Stop: " + CURRENT_STOP + "\nCurrent Passengers: " + CURRENT_PASSENGERS + "\n============================================================");
                 Thread.sleep(SPEED);
                 CURRENT_STOP = GET_NEXT_STOP();
             }
         } catch (Exception e) {
             System.out.println("ERROR: " + e.getMessage());
         } finally {
+            System.out.println("\n============================================================\n" + this.getName() + ":\n" + ORIGIN + " --> " + DESTINATION + "\nCurrent Stop: " + CURRENT_STOP + "\nCurrent Passengers: " + CURRENT_PASSENGERS + "\n============================================================");
             System.out.println("\n============================================================\n" + this.getName() + " has arrived to " + DESTINATION + "." + "\n============================================================");
             CURRENT_PASSENGERS = 0;
         }

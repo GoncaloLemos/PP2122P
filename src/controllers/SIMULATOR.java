@@ -45,6 +45,14 @@ public class SIMULATOR {
         final int NUMBER_OF_EXPRESSO = JSON.get("NUMBER_OF_EXPRESSO") instanceof Long ? ((Long) JSON.get("NUMBER_OF_EXPRESSO")).intValue() : (int) JSON.get("NUMBER_OF_EXPRESSO");
         final int MINIMUM_DELAY_FOR_MALFUNCTION_EXECUTION = JSON.get("MINIMUM_DELAY_FOR_MALFUNCTION_EXECUTION") instanceof Long ? ((Long) JSON.get("MINIMUM_DELAY_FOR_MALFUNCTION_EXECUTION")).intValue() : (int) JSON.get("MINIMUM_DELAY_FOR_MALFUNCTION_EXECUTION");
         final int MAXIMUM_DELAY_FOR_MALFUNCTION_EXECUTION = JSON.get("MAXIMUM_DELAY_FOR_MALFUNCTION_EXECUTION") instanceof Long ? ((Long) JSON.get("MAXIMUM_DELAY_FOR_MALFUNCTION_EXECUTION")).intValue() : (int) JSON.get("MAXIMUM_DELAY_FOR_MALFUNCTION_EXECUTION");
+        final int MAX_CAPACITY_MINI_BUS = JSON.get("MAX_CAPACITY_MINI_BUS") instanceof Long ? ((Long) JSON.get("MAX_CAPACITY_MINI_BUS")).intValue() : (int) JSON.get("MAX_CAPACITY_MINI_BUS");
+        final int MAX_CAPACITY_CONVENCIONAL = JSON.get("MAX_CAPACITY_CONVENCIONAL") instanceof Long ? ((Long) JSON.get("MAX_CAPACITY_CONVENCIONAL")).intValue() : (int) JSON.get("MAX_CAPACITY_CONVENCIONAL");
+        final int MAX_CAPACITY_LONG_DRIVE = JSON.get("MAX_CAPACITY_LONG_DRIVE") instanceof Long ? ((Long) JSON.get("MAX_CAPACITY_LONG_DRIVE")).intValue() : (int) JSON.get("MAX_CAPACITY_LONG_DRIVE");
+        final int MAX_CAPACITY_EXPRESSO = JSON.get("MAX_CAPACITY_EXPRESSO") instanceof Long ? ((Long) JSON.get("MAX_CAPACITY_EXPRESSO")).intValue() : (int) JSON.get("MAX_CAPACITY_EXPRESSO");
+        final int BASE_SPEED_MINI_BUS = JSON.get("BASE_SPEED_MINI_BUS") instanceof Long ? ((Long) JSON.get("BASE_SPEED_MINI_BUS")).intValue() : (int) JSON.get("BASE_SPEED_MINI_BUS");
+        final int BASE_SPEED_CONVENCIONAL = JSON.get("BASE_SPEED_CONVENCIONAL") instanceof Long ? ((Long) JSON.get("BASE_SPEED_CONVENCIONAL")).intValue() : (int) JSON.get("BASE_SPEED_CONVENCIONAL");
+        final int BASE_SPEED_LONG_DRIVE = JSON.get("BASE_SPEED_LONG_DRIVE") instanceof Long ? ((Long) JSON.get("BASE_SPEED_LONG_DRIVE")).intValue() : (int) JSON.get("BASE_SPEED_LONG_DRIVE");
+        final int BASE_SPEED_EXPRESSO = JSON.get("BASE_SPEED_EXPRESSO") instanceof Long ? ((Long) JSON.get("BASE_SPEED_EXPRESSO")).intValue() : (int) JSON.get("BASE_SPEED_EXPRESSO");
         BUS[] BUS_COLLECTION = new BUS[NUMBER_OF_MINI_BUS + NUMBER_OF_CONVENCIONAL + NUMBER_OF_LONG_DRIVE + NUMBER_OF_EXPRESSO];
         for (int i = 0; i < NUMBER_OF_MINI_BUS; i++) {
             CITY ORIGIN = CITY.values()[new Random().nextInt(CITY.values().length)];
@@ -52,7 +60,7 @@ public class SIMULATOR {
             while (DESTINATION == ORIGIN) {
                 DESTINATION = CITY.values()[new Random().nextInt(CITY.values().length)];
             }
-            BUS BUS_THREAD = new BUS("MINI_BUS #" + i + 1, BUS_TYPE.MINI_BUS, ORIGIN, DESTINATION);
+            BUS BUS_THREAD = new BUS("MINI_BUS #" + i + 1, BUS_TYPE.MINI_BUS, ORIGIN, DESTINATION, MAX_CAPACITY_MINI_BUS, BASE_SPEED_MINI_BUS);
             BUS_THREAD.start();
             BUS_COLLECTION[i] = BUS_THREAD;
         }
@@ -62,7 +70,7 @@ public class SIMULATOR {
             while (DESTINATION == ORIGIN) {
                 DESTINATION = CITY.values()[new Random().nextInt(CITY.values().length)];
             }
-            BUS BUS_THREAD = new BUS("CONVENCIONAL #" + i + 1, BUS_TYPE.CONVENTIONAL, ORIGIN, DESTINATION);
+            BUS BUS_THREAD = new BUS("CONVENCIONAL #" + i + 1, BUS_TYPE.CONVENTIONAL, ORIGIN, DESTINATION, MAX_CAPACITY_CONVENCIONAL, BASE_SPEED_CONVENCIONAL);
             BUS_THREAD.start();
             BUS_COLLECTION[i + NUMBER_OF_MINI_BUS] = BUS_THREAD;
         }
@@ -72,7 +80,7 @@ public class SIMULATOR {
             while (DESTINATION == ORIGIN) {
                 DESTINATION = CITY.values()[new Random().nextInt(CITY.values().length)];
             }
-            BUS BUS_THREAD = new BUS("LONG_DRIVE #" + i + 1, BUS_TYPE.LONG_DRIVE, ORIGIN, DESTINATION);
+            BUS BUS_THREAD = new BUS("LONG_DRIVE #" + i + 1, BUS_TYPE.LONG_DRIVE, ORIGIN, DESTINATION, MAX_CAPACITY_LONG_DRIVE, BASE_SPEED_LONG_DRIVE);
             BUS_THREAD.start();
             BUS_COLLECTION[i + NUMBER_OF_MINI_BUS + NUMBER_OF_CONVENCIONAL] = BUS_THREAD;
         }
@@ -82,7 +90,7 @@ public class SIMULATOR {
             while (DESTINATION == ORIGIN) {
                 DESTINATION = CITY.values()[new Random().nextInt(Arrays.stream(CITY.values()).filter(j -> j == CITY.CASCAIS || j == CITY.COIMBRA).toArray().length)];
             }
-            BUS BUS_THREAD = new BUS("EXPRESS #" + i + 1, BUS_TYPE.EXPRESS, ORIGIN, DESTINATION);
+            BUS BUS_THREAD = new BUS("EXPRESS #" + i + 1, BUS_TYPE.EXPRESS, ORIGIN, DESTINATION, MAX_CAPACITY_EXPRESSO, BASE_SPEED_EXPRESSO);
             BUS_THREAD.start();
             BUS_COLLECTION[i + NUMBER_OF_MINI_BUS + NUMBER_OF_CONVENCIONAL + NUMBER_OF_LONG_DRIVE] = BUS_THREAD;
         }
