@@ -8,38 +8,15 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 public class BUS extends Thread {
-    /**
-     * The bus’ maximum capacity.
-     */
     private final int MAX_CAPACITY;
-    /**
-     * The bus' type.
-     */
     private final BUS_TYPE TYPE;
-    /**
-     * The bus' destination.
-     */
     private final CITY DESTINATION;
-    /**
-     * The bus' origin city.
-     */
     private final CITY ORIGIN;
-    /**
-     * The bus' current speed. (Delay in milliseconds it takes to travel between two stops.)
-     * It is calculated based on the bus' type.
-     * It is also the maximum speed of the bus.
-     */
     private final int TRAVEL_DELAY;
-    /**
-     * The bus' current stop.
-     */
     private CITY CURRENT_STOP;
-    /**
-     * The bus' current amount passengers.
-     */
     private int CURRENT_PASSENGERS = 0;
-    private boolean MALFUNCTIONING = false;
-    private int MALFUNCTION_DURATION = 0;
+    private boolean IS_PAUSED = false;
+    private int PAUSE_DURATION = 0;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -62,9 +39,9 @@ public class BUS extends Thread {
             System.out.println("\n============================================================\n" + this.getName() + ":\n" + ORIGIN + " --> " + DESTINATION + "\nCurrent Stop: " + CURRENT_STOP + "\nCurrent Passengers: " + CURRENT_PASSENGERS + "\n============================================================");
             IntStream.range(0, TRAVEL_DELAY).forEach(i -> {
                 try {
-                    if (MALFUNCTIONING && this.getState() != State.TIMED_WAITING) {
-                        sleep(MALFUNCTION_DURATION);
-                        MALFUNCTIONING = false;
+                    if (IS_PAUSED && this.getState() != State.TIMED_WAITING) {
+                        sleep(PAUSE_DURATION);
+                        IS_PAUSED = false;
                         System.out.println("\n===========================================================" +
                                 "\n            " + getName() + " IS BACK TO WORK." +
                                 "\n===========================================================");
@@ -95,12 +72,16 @@ public class BUS extends Thread {
         };
     }
 
-    public void MALFUNCTION(final int DURATION) {
-        MALFUNCTIONING = true;
-        MALFUNCTION_DURATION = DURATION;
+    public void PAUSE(final int DURATION) {
+        IS_PAUSED = true;
+        PAUSE_DURATION = DURATION;
     }
 
-    public boolean IS_MALFUNCTIONING() {
-        return MALFUNCTIONING;
+    public boolean IS_PAUSE() {
+        return IS_PAUSED;
+    }
+
+    public BUS_TYPE GET_TYPE() {
+        return TYPE;
     }
 }
