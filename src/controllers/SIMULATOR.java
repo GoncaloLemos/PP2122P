@@ -64,18 +64,53 @@ public class SIMULATOR {
         }
         final int MINIMUM_DELAY_FOR_MALFUNCTION_EXECUTION = Integer.parseInt(JSON.get("MINIMUM_DELAY_FOR_MALFUNCTION_EXECUTION").toString()); // Gets the minimum delay for a malfunction to execute from the JSON file.
         final int MAXIMUM_DELAY_FOR_MALFUNCTION_EXECUTION = Integer.parseInt(JSON.get("MAXIMUM_DELAY_FOR_MALFUNCTION_EXECUTION").toString()); // Gets the maximum delay for a malfunction to execute from the JSON file.
+        if (MINIMUM_DELAY_FOR_MALFUNCTION_EXECUTION < 0) { // Checks if the minimum delay for a malfunction to execute is less than 0.
+            System.err.println("""
+                    ERROR: MINIMUM_DELAY_FOR_MALFUNCTION_EXECUTION must be greater than or equal to 0."""); // If it is, it will print an error.
+            System.exit(1); // Exits the program, if the minimum delay for a malfunction to execute is less than 0.
+        }
+        if (MAXIMUM_DELAY_FOR_MALFUNCTION_EXECUTION < 0) { // Checks if the maximum delay for a malfunction to execute is less than 0.
+            System.err.println("""
+                    ERROR: MAXIMUM_DELAY_FOR_MALFUNCTION_EXECUTION must be greater than or equal to 0."""); // If it is, it will print an error.
+            System.exit(1); // Exits the program, if the maximum delay for a malfunction to execute is less than 0.
+        }
+        if (MAXIMUM_DELAY_FOR_MALFUNCTION_EXECUTION < MINIMUM_DELAY_FOR_MALFUNCTION_EXECUTION) { // Checks if the maximum delay for a malfunction to execute is less than the minimum delay for a malfunction to execute.
+            System.err.println("""
+                    ERROR: MAXIMUM_DELAY_FOR_MALFUNCTION_EXECUTION must be greater than or equal to MINIMUM_DELAY_FOR_MALFUNCTION_EXECUTION."""); // If it is, it will print an error.
+            System.exit(1); // Exits the program, if the maximum delay for a malfunction to execute is less than the minimum delay for a malfunction to execute.
+        }
         final int MAX_CAPACITY_MINI_BUS = Integer.parseInt(JSON.get("MAX_CAPACITY_MINI_BUS").toString()); // Gets the maximum capacity of a mini bus from the JSON file.
         final int MAX_CAPACITY_CONVENCIONAL = Integer.parseInt(JSON.get("MAX_CAPACITY_CONVENCIONAL").toString()); // Gets the maximum capacity of a conventional bus from the JSON file.
         final int MAX_CAPACITY_LONG_DRIVE = Integer.parseInt(JSON.get("MAX_CAPACITY_LONG_DRIVE").toString()); // Gets the maximum capacity of a long-drive bus from the JSON file.
         final int MAX_CAPACITY_EXPRESS = Integer.parseInt(JSON.get("MAX_CAPACITY_EXPRESS").toString()); // Gets the maximum capacity of an express bus from the JSON file.
+        if (MAX_CAPACITY_MINI_BUS < 1 || MAX_CAPACITY_CONVENCIONAL < 1 || MAX_CAPACITY_LONG_DRIVE < 1 || MAX_CAPACITY_EXPRESS < 1) { // Checks if the maximum capacity of a bus is less than 1.
+            System.err.println("""
+                    ERROR: The maximum capacity of a bus must be greater than or equal to 1."""); // If it is, it will print an error.
+            System.exit(1); // Exits the program, if the maximum capacity of a bus is less than 1.
+        }
         final int BASE_SPEED_MINI_BUS = Integer.parseInt(JSON.get("BASE_SPEED_MINI_BUS").toString()); // Gets the base speed of a mini bus from the JSON file.
         final int BASE_SPEED_CONVENCIONAL = Integer.parseInt(JSON.get("BASE_SPEED_CONVENCIONAL").toString()); // Gets the base speed of a conventional bus from the JSON file.
         final int BASE_SPEED_LONG_DRIVE = Integer.parseInt(JSON.get("BASE_SPEED_LONG_DRIVE").toString()); // Gets the base speed of a long-drive bus from the JSON file.
         final int BASE_SPEED_EXPRESS = Integer.parseInt(JSON.get("BASE_SPEED_EXPRESS").toString()); // Gets the base speed of an express bus from the JSON file.
+        if (BASE_SPEED_MINI_BUS < 0 || BASE_SPEED_CONVENCIONAL < 0 || BASE_SPEED_LONG_DRIVE < 0 || BASE_SPEED_EXPRESS < 0) { // Checks if the base speed of a bus is less than 0.
+            System.err.println("""
+                    ERROR: The base speed of a bus must be greater than or equal to 0."""); // If it is, it will print an error.
+            System.exit(1); // Exits the program, if the base speed of a bus is less than 0.
+        }
         final int FLAT_TIRE_DELAY_FOR_MALFUNCTION_EXECUTION = Integer.parseInt(JSON.get("FLAT_TIRE_DELAY_FOR_MALFUNCTION_EXECUTION").toString()); // Gets the flat tire delay for a malfunction to be repaired from the JSON file.
         final int COOLING_SYSTEM_DELAY_FOR_MALFUNCTION_EXECUTION = Integer.parseInt(JSON.get("COOLING_SYSTEM_DELAY_FOR_MALFUNCTION_EXECUTION").toString()); // Gets the cooling system delay for a malfunction to be repaired from the JSON file.
         final int COLLISION_DELAY_FOR_MALFUNCTION_EXECUTION = Integer.parseInt(JSON.get("COLLISION_DELAY_FOR_MALFUNCTION_EXECUTION").toString()); // Gets the collision delay for a malfunction to be repaired from the JSON file.
+        if (FLAT_TIRE_DELAY_FOR_MALFUNCTION_EXECUTION < 0 || COOLING_SYSTEM_DELAY_FOR_MALFUNCTION_EXECUTION < 0 || COLLISION_DELAY_FOR_MALFUNCTION_EXECUTION < 0) { // Checks if the delay for a malfunction to be repaired is less than 0.
+            System.err.println("""
+                    ERROR: The delay for a malfunction to be repaired must be greater than or equal to 0."""); // If it is, it will print an error.
+            System.exit(1); // Exits the program, if the delay for a malfunction to be repaired is less than 0.
+        }
         final double MALFUNCTION_PROBABILITY = Double.parseDouble(JSON.get("MALFUNCTION_PROBABILITY").toString()); // Gets the probability of a malfunction occurring from the JSON file.
+        if (MALFUNCTION_PROBABILITY < 0 || MALFUNCTION_PROBABILITY > 1) { // Checks if the probability of a malfunction occurring is less than 0 or greater than 1.
+            System.err.println("""
+                    ERROR: The probability of a malfunction occurring must be between 0 and 1."""); // If it is, it will print an error.
+            System.exit(1); // Exits the program, if the probability of a malfunction occurring is less than 0 or greater than 1.
+        }
         System.out.println("""
                 ========================================================
                                    SIMULATION STARTED
