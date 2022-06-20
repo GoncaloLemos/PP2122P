@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022, Pedro S.. All rights reserved.
+ * Copyright © 2022, Pedro Simões & Gonçalo Lemos. All rights reserved.
  */
 
 package controllers;
